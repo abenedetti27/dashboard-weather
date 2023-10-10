@@ -1,0 +1,39 @@
+body {
+    background-color:steelblue;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+    font-size: 30px;
+    
+}
+form {
+    margin-top: 20px;
+}
+button {
+    padding: 15px 30px;
+    background-color: slategray;
+    color:aqua;
+    border: none;
+    cursor:grab;
+}
+
+input[type="text"] {
+    padding: 15px;
+    width: 75%;
+}
+
+#weather-info {
+    margin-top: 20px;
+
+}
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: aqua;
+    border-radius: 5px;
+    text-align: center;
+
+
+}
