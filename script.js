@@ -51,6 +51,11 @@ function displayWeatherData(data){
     var humidity = data.main.humidity;
     var humidityEl = document.getElementById('humidity');
     humidityEl.textContent = 'Humidity: ' + humidity + '%';
+    //not working
+    var weatherIconCode = data.weather[0].icon;
+    var iconUrl = 'http://openweathermap.org/img/w/' + weatherIconCode + '.png';
+    var weatherIcon = document.createElement('img');
+    weatherIcon.src = iconUrl;
 
    
 
