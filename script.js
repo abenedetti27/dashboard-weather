@@ -2,6 +2,7 @@ var apiKey = '2debf91501bc201aacdbd76671d63298';
 var searchForm = document.getElementById('search-form');
 var cityInput = document.getElementById('city-input');
 var weatherInfo = document.getElementById('weather-info');
+var historyList = document.getElementById('history-list');
 
 //event listener for clicking on submit within form on site
 searchForm.addEventListener('click', function (e){
@@ -29,10 +30,11 @@ function getWeatherData(city) {
     });
 }
 
-//function to display weather data
+//function to display weather data- temp, wind, humidity
 function displayWeatherData(data){
     var cityName = data.name;
     console.log("city name", cityName)
+    
     var tempEl = document.getElementById('temp');
     var temperature = data.main.temp; 
     tempEl.textContent = temperature + '°F';
@@ -43,6 +45,13 @@ function displayWeatherData(data){
     cityEl.textContent = cityName;
     var descriptionEl = document.getElementById('description');
     descriptionEl.textContent = weatherDescription;
+    var wind = data.wind.speed;
+    var windEl = document.getElementById('wind');
+    windEl.textContent = 'Wind: ' + wind + ' mph';
+    var humidity = data.main.humidity;
+    var humidityEl = document.getElementById('humidity');
+    humidityEl.textContent = 'Humidity: ' + humidity + '%';
+
 
 }
 
@@ -73,6 +82,8 @@ function displayFiveDayForecast(data){
             var temperature = (dayData.main.temp);
             console.log(temperature)
             var weatherDescription = dayData.weather[0].description;
+            var wind = dayData.wind.speed;
+            var humidity = dayData.main.humidity;
 
             var dayForecaseEl = document.createElement('div');
             dayForecaseEl.classList.add('forecast-day');
@@ -80,12 +91,15 @@ function displayFiveDayForecast(data){
                 <h3>${date.toDateString()}</h3>
                 <p>Temperature: ${temperature}°F</p>
                 <p>Weather: ${weatherDescription}</p>
+                <p>Wind: ${wind} mph</p>
+                <p>Humidity: ${humidity}%</p>
             `;
             forecastContainer.appendChild(dayForecaseEl);
 
 
         }
     }
+
 function updateSearchHistory(city){
     var historyList = document.getElementById('history-list');
     var listItem = document.createElement('li');
@@ -94,11 +108,12 @@ function updateSearchHistory(city){
     var searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
     searchHistory.push(city);
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    console.log('Updated search history:', searchHistory);
 }
 
 function loadSearchHistory(){
-    var searchHistory = JSON.parse(localStorage,getItem('searchHistory')) || [];
-    console.log(searchHistory)
+    var searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    console.log('Loaded search history:', searchHistory);
     var historyList = document.getElementById('history-list');
 
     searchHistory.forEach(city => {
@@ -109,8 +124,9 @@ function loadSearchHistory(){
     });
 }
 loadSearchHistory();
-historyList.addEventListener('click', function (e){
-    if(e.target && e.target.nodeName === 'LI'){
+
+historyList.addEventListener('click', function (e) {
+    if (e.target && e.target.nodeName === 'LI') {
         var cityName = e.target.textContent;
         getWeatherData(cityName);
         getFiveDayForecast(cityName);
