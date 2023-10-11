@@ -60,6 +60,8 @@ function getFiveDayForecast(lat,lon){
 }
 
 //function to display 5 day forecast
+//needs loop to create boxes
+//console log
 function displayFiveDayForecast(data){
     var forecastContainer =document.getElementById('forecast');
     forecastContainer.innerHTML = '';
@@ -84,8 +86,36 @@ function displayFiveDayForecast(data){
 
         }
     }
-    
-   
+function updateSearchHistory(city){
+    var historyList = document.getElementById('history-list');
+    var listItem = document.createElement('li');
+    listItem.textContent = city;
+    historyList.appendChild(listItem);
+    var searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    searchHistory.push(city);
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+}
+
+function loadSearchHistory(){
+    var searchHistory = JSON.parse(localStorage,getItem('searchHistory')) || [];
+    console.log(searchHistory)
+    var historyList = document.getElementById('history-list');
+
+    searchHistory.forEach(city => {
+        var listItem = document.createElement('li');
+        listItem.textContent = city;
+        historyList.appendChild(listItem);
+        
+    });
+}
+loadSearchHistory();
+historyList.addEventListener('click', function (e){
+    if(e.target && e.target.nodeName === 'LI'){
+        var cityName = e.target.textContent;
+        getWeatherData(cityName);
+        getFiveDayForecast(cityName);
+    }
+});
     
     
 
