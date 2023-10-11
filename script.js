@@ -52,6 +52,9 @@ function displayWeatherData(data){
     var humidityEl = document.getElementById('humidity');
     humidityEl.textContent = 'Humidity: ' + humidity + '%';
 
+   
+
+
 
 }
 
@@ -84,11 +87,16 @@ function displayFiveDayForecast(data){
             var weatherDescription = dayData.weather[0].description;
             var wind = dayData.wind.speed;
             var humidity = dayData.main.humidity;
+            var weatherIconCode = dayData.weather[0].icon;
+
+            
+            var iconUrl = 'http://openweathermap.org/img/w/' + weatherIconCode + '.png';
 
             var dayForecaseEl = document.createElement('div');
             dayForecaseEl.classList.add('forecast-day');
             dayForecaseEl.innerHTML = `
                 <h3>${date.toDateString()}</h3>
+                <img src="${iconUrl}" alt="Weather Icon">
                 <p>Temperature: ${temperature}°F</p>
                 <p>Weather: ${weatherDescription}</p>
                 <p>Wind: ${wind} mph</p>
