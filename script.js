@@ -23,9 +23,37 @@ function getWeatherData(city) {
     })
     .catch(error => {
         console.error('Error:', error);
-    })
+    });
 }
 
 //function to display weather data
+function displayWeatherData(data){
+    var cityName = date.name;
+    var temperature = (data.main.temperature);
+    var weatherDescription = data.weather[0].description;
+
+
+}
+
+//function to get 5 day forecast
+function getFiveDayForecast(city){
+    fetch('https://api.openweathermap.org/data/2.5/weather?q='+cityInput+'&appid='+apiKey)
+    .then(response => response.json())
+    .then(data => {
+        displayFiveDayForecast(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });    
+}
+
+//function to display 5 day forecast
+function displayFiveDayForecast(data){
+    var cityName = date.name;
+    var temperature = (data.main.temperature);
+    var weatherDescription = data.weather[0].description;
+
+
+}
 
 //base url: https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
