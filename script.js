@@ -22,13 +22,7 @@ function getWeatherData(city) {
     .then(data => {
         console.log(data)
         displayWeatherData(data);
-//         lat
-// : 
-// 47.6062
-// lon
-// : 
-// -122.3321
-        getFiveDayForecast(47.6062, -122.3321)//example: data.main.temp; pass two
+        getFiveDayForecast(data.coord.lat, data.coord.lon)//example: data.main.temp; pass two
     })
     .catch(error => {
         console.error('Error:', error);
@@ -41,7 +35,7 @@ function displayWeatherData(data){
     console.log("city name", cityName)
     var tempEl = document.getElementById('temp');
     var temperature = data.main.temp; 
-    tempEl.textContent = temperature + ' degrees';
+    tempEl.textContent = temperature + '°F';
     console.log("temperature", temperature)
     var weatherDescription = data.weather[0].description;
     console.log("description", weatherDescription)
@@ -55,7 +49,7 @@ function displayWeatherData(data){
 //pass lat and long from data to forecast
 //function to get 5 day forecast
 function getFiveDayForecast(lat,lon){
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`)
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`)
     .then(response => response.json())
     .then(data => {
         displayFiveDayForecast(data);
@@ -67,10 +61,37 @@ function getFiveDayForecast(lat,lon){
 
 //function to display 5 day forecast
 function displayFiveDayForecast(data){
-    var cityName = date.name;
-    var temperature = (data.main.temperature);
-    var weatherDescription = data.weather[0].description;
-//needs loop to create boxes
+    var forecastContainer =document.getElementById('forecast');
+    forecastContainer.innerHTML = '';
+
+    for(let i = 0; i < data.list.length; i++){
+        if(data.list[i].dt_txt.includes('12:00:00')){
+            var dayData = data.list[i];
+            var date = new Date(dayData.dt * 1000);
+            var temperature = (dayData.main.temp);
+            console.log(temperature)
+            var weatherDescription = dayData.weather[0].description;
+
+            var dayForecaseEl = document.createElement('div');
+            dayForecaseEl.classList.add('forecast-day');
+            dayForecaseEl.innerHTML = `
+                <h3>${date.toDateString()}</h3>
+                <p>Temperature: ${temperature}°F</p>
+                <p>Weather: ${weatherDescription}</p>
+            `;
+            forecastContainer.appendChild(dayForecaseEl);
+
+
+        }
+    }
+    
+   
+    
+    
+
+
+
+    //needs loop to create boxes
 //console log
 
 }
